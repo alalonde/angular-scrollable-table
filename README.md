@@ -10,7 +10,7 @@ Other features:
 * Sortable header with custom comparator functions
 
 Usage:
-`angular.module('myApp', ['multi-select', ...]);`
+`angular.module('myApp', ['scrollable-table', ...]);`
 
 Demo here: http://jsfiddle.net/alalonde/BrTzg/
 
