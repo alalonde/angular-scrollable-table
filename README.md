@@ -9,6 +9,9 @@ Other features:
 * Scroll to row
 * Sortable header with custom comparator functions
 
+Usage:
+`angular.module('myApp', ['multi-select', ...]);
+
 Demo here: http://jsfiddle.net/alalonde/BrTzg/
 
 More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-header-scrollable-table/
