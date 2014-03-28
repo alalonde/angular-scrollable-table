@@ -24,7 +24,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid #d5d5d5;
-    -webkit-overflow-scrolling: touch;
+/*    -webkit-overflow-scrolling: touch; have to debug on a device to get this working*/
 }
 .scrollArea table {
     overflow-x: hidden;
@@ -32,7 +32,6 @@
     margin-bottom: 0;
     border: none;
     border-collapse: separate;
-    -webkit-overflow-scrolling: touch;
 }
 .scrollArea table th {
     padding: 0;
