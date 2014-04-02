@@ -24,7 +24,9 @@
     overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid #d5d5d5;
-    -webkit-overflow-scrolling: touch;
+    /*  the implementation of this is still quite buggy; specifically, it doesn't like the 
+        absolutely positioned headers within 
+    -webkit-overflow-scrolling: touch;  */
 }
 .scrollArea table {
     overflow-x: hidden;
@@ -32,7 +34,6 @@
     margin-bottom: 0;
     border: none;
     border-collapse: separate;
-    -webkit-overflow-scrolling: touch;
 }
 .scrollArea table th {
     padding: 0;

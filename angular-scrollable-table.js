@@ -49,26 +49,40 @@
           return x > y ? 1 : -1;
         }
 
-        var offset = $element.find(".headerSpacer").height();
+        function scrollToRow(row) {
+          var offset = $element.find(".headerSpacer").height();
+          var currentScrollTop = $element.find(".scrollArea").scrollTop();
+          $element.find(".scrollArea").scrollTop(currentScrollTop + row.position().top - offset);
+        }
+
         $scope.$on('rowSelected', function(event, rowId) {
-          var scrollArea = $element.find(".scrollArea");
-          var row = scrollArea.find("table tr[row-id='" + rowId + "']");
+          var row = $element.find(".scrollArea table tr[row-id='" + rowId + "']");
           if(row.length === 1) {
-            var currentScrollTop = scrollArea.scrollTop();
-            $element.find(".scrollArea").scrollTop(currentScrollTop + row.position().top - offset);
+            // Ensure that the headers have been fixed before scrolling, to ensure accurate 
+            // position calculations
+            $q.all([waitForRender(), headersAreFixed.promise]).then(function() {
+              scrollToRow(row);
+            });
           }
         });
 
         // Set fixed widths for the table headers in case the text overflows.
-        // There's no callback for when rendering is complete, so check the width of the table 
+        // There's no callback for when rendering is complete, so check the visibility of the table 
         // periodically -- see http://stackoverflow.com/questions/11125078
-        function checkIfRendered() {
-          if($element.find("table:visible").length === 0) {
-            $timeout(checkIfRendered, 100);
-          } else {
-            fixHeaderWidths();
+        function waitForRender() {
+          var deferredRender = $q.defer();
+          function wait() {
+            if($element.find("table:visible").length === 0) {
+              $timeout(wait, 100);
+            } else {
+              deferredRender.resolve();
+            }
           }
+          $timeout(wait);
+          return deferredRender.promise;
         }
+
+        var headersAreFixed = $q.defer();
         function fixHeaderWidths() {        
           if(!$element.find("thead th .th-inner").length)
             $element.find("thead th").wrapInner('<div class="th-inner"></div>');
@@ -93,6 +107,7 @@
             }
             el.attr("title", title);
           });
+          headersAreFixed.resolve();
         }
 
         $(window).resize(fixHeaderWidths);
@@ -101,7 +116,7 @@
         // http://docs.angularjs.org/api/ng.$timeout
         $scope.$watch('rows', function(newValue, oldValue) {
           if(newValue) {
-            $timeout(checkIfRendered);
+            waitForRender().then(fixHeaderWidths);
           } 
         });
 
