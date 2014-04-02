@@ -99,11 +99,8 @@
             }
             el.css("width", width);
             var title = el.parent().attr("title");
-            if(el.children().length) {
-              title = el.find(".title .ng-scope").html();
-            } 
             if(!title) {
-              title = el.html();
+              title = el.children().length ? el.find(".title .ng-scope").html() : el.html();
             }
             el.attr("title", title);
           });
