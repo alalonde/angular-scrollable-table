@@ -2,7 +2,7 @@
   'use strict';
   angular.module('scrollable-table', [])
 
-  .directive('scrollableTable', ['$timeout', function($timeout) {
+  .directive('scrollableTable', ['$timeout', '$q', function($timeout, $q) {
     return { 
       transclude: true,
       restrict: 'E',
