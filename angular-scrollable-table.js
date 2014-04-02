@@ -91,12 +91,15 @@
             el = $(el);
             var padding = el.outerWidth() - el.width();
             var width = el.parent().width() - padding; 
-            // if it's the last header, add space for the scrollbar equivalent
-            var lastCol = $element.find("table th:visible:last")[0] == el.parent()[0];
-            var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
-            if(lastCol && hasScrollbar) {
-              width += 18;
+            // if it's the last header, add space for the scrollbar equivalent unless it's centered
+            var lastCol = $element.find("table th:visible:last");
+            if(lastCol.css("text-align") !== "center") {
+              var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
+              if(lastCol[0] == el.parent()[0] && hasScrollbar) {
+                width += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+              }
             }
+            
             el.css("width", width);
             var title = el.parent().attr("title");
             if(!title) {
