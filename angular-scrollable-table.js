@@ -105,7 +105,7 @@
             if(!title) {
               title = el.children().length ? el.find(".title .ng-scope").html() : el.html();
             }
-            el.attr("title", title);
+            el.attr("title", title.trim());
           });
           headersAreFixed.resolve();
         }
