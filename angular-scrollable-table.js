@@ -122,6 +122,11 @@
 
         $scope.asc = !$attrs.hasOwnProperty("desc");
         $scope.sortAttr = $attrs.sortAttr;
+
+        $element.find(".scrollArea").scroll(function(event)
+        {
+          $element.find("thead th .th-inner").css('margin-left', 0 - event.target.scrollLeft);
+        });
       }]
     };
   }])
