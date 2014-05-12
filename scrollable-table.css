@@ -3,6 +3,7 @@
     position: relative;
     padding-top: 37px;
     margin-bottom: 30px;
+    overflow: hidden;
 }
 .scrollableContainer .headerSpacer {
     border: 1px solid #d5d5d5;
@@ -21,7 +22,7 @@
 }
 .scrollArea {
     height: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
     border: 1px solid #d5d5d5;
     /*  the implementation of this is still quite buggy; specifically, it doesn't like the 
@@ -32,6 +33,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     margin-bottom: 0;
+    width: 100%;
     border: none;
     border-collapse: separate;
 }

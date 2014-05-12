@@ -105,7 +105,7 @@
             if(!title) {
               title = el.children().length ? el.find(".title .ng-scope").html() : el.html();
             }
-            el.attr("title", title);
+            el.attr("title", title.trim());
           });
           headersAreFixed.resolve();
         }
@@ -122,6 +122,11 @@
 
         $scope.asc = !$attrs.hasOwnProperty("desc");
         $scope.sortAttr = $attrs.sortAttr;
+
+        $element.find(".scrollArea").scroll(function(event)
+        {
+          $element.find("thead th .th-inner").css('margin-left', 0 - event.target.scrollLeft);
+        });
       }]
     };
   }])
