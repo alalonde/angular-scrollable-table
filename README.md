@@ -18,3 +18,5 @@ More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-hea
 
 TODO:
 * Hide table until fully rendered to avoid flickering of header?
+
+License: MIT
