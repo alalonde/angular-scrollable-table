@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Angular-scrollable-table directive demo</title>
+
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+        rel="stylesheet" type="text/css">
+    <link href='../scrollable-table.css' rel="stylesheet" type="text/css">
+    <style type="text/css">
+      body {
+        margin: 20px;
+      }
+    </style>
+    <script type="text/javascript" src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.2.19/angular.min.js"></script>
+    <script type="text/javascript" src="../angular-scrollable-table.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </head>
+  <body ng-app="myApp">
+    <div ng-controller="MyCtrl">
+      <scrollable-table watch="visibleProjects">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+               <th sortable-header col="facility">Facility</th>
+               <th sortable-header col="code">Unit code</th>
+               <th sortable-header col="cost">Cost</th>
+               <th sortable-header col="conditionRating">Condition score</th>
+               <th sortable-header col="extent">Replace %</th>
+               <th sortable-header col="planYear" comparator-fn="comparator">Plan year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="response in visibleProjects" row-id="{{ response.facility }}" 
+                ng-class="{info: selected == response.facility}" >
+              <td>{{ response.facility }}</td>
+              <td>{{ response.code }}</td>
+              <td>{{ response.cost }}</td>
+              <td class="cr">{{ response.conditionRating }}</td>
+              <td>{{ response.extent }}</td>
+              <td>{{ response.planYear }}</td>          
+            </tr>
+          </tbody>
+        </table>
+      </scrollable-table>
+      <div>
+        <label>Select a facility:</label>
+        <select ng-model="selected" ng-options="f for f in facilities"></select>
+      </div>
+    </div>
+  </body>
+</html>
+
