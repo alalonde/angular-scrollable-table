@@ -118,7 +118,7 @@
           headersAreFixed.resolve();
         }
 
-        $(window).resize(fixHeaderWidths);
+        angular.element(window).on('resize', fixHeaderWidths);
 
         // when the data model changes, fix the header widths.  See the comments here:
         // http://docs.angularjs.org/api/ng.$timeout
