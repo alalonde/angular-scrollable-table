@@ -100,9 +100,9 @@
                         if (!$element.find("thead th .th-inner").length)
                             $element.find("thead th").wrapInner('<div class="th-inner"></div>');
 
-                        var innerPos = 1;//  1 is the width of right border;
+                        var headerPos = 1;//  1 is the width of right border;
                         $element.find("table th .th-inner").each(function (index, el) {
-                            el = $(el);
+                            el = angular.element(el);
                             //var padding = el.outerWidth() - el.width();
                             var width = el.parent().width();// - padding;   //to made header fit with parent.
                             // if it's the last header, add space for the scrollbar equivalent unless it's centered
@@ -125,8 +125,8 @@
                             //following are resize stuff, to made th-inner position correct when dragging column.
                             // declare width to TH element to fix width of left columns when resizing column.
                             el.parent().css('width', width);
-                            el.css("left", innerPos);
-                            innerPos += width;
+                            el.css("left", headerPos);
+                            headerPos += width;
                         });
                         headersAreFixed.resolve();
                     }
@@ -160,7 +160,7 @@
                         '<div ng-mouseenter="enter()" ng-mouseleave="leave()">' +
                             '<div class="title" ng-transclude></div>' +
                             '<span class="orderWrapper">' +
-                                '<span class="order" ng-show="focused || isActive()" ng-click="toggleSort($event)">' +
+                                '<span class="order" ng-show="focused || isActive()" ng-click="toggleSort($event)" ng-class="{active:isActive()}">' +
                                     '<i ng-show="isAscending()" class="glyphicon glyphicon-chevron-up"></i>' +
                                     '<i ng-show="!isAscending()" class="glyphicon glyphicon-chevron-down"></i>' +
                                 '</span>' +
@@ -201,10 +201,11 @@
                     scope.resizing = function(e){
                         var startPoint = e.pageX,
                             _document = angular.element(document),
-                            _body = angular.element('body');
-
+                            _body = angular.element('body'),
+                            coverPanel = angular.element('.scrollableContainer .resizing-cover');
                         _document.bind('mousemove', function (e){
-                            _body.addClass('resizing');
+                            _body.addClass('scrollable-resizing');
+                            coverPanel.addClass('active');
                             e.preventDefault();
                             var offsetX = e.pageX - startPoint,
                                 newWidth = _getSize(scope.element.css('width')),
@@ -212,20 +213,21 @@
                                 widthOfNextColOfActive = _getSize(scope.element.next().css('width')),
                                 minWidthOfNextColOfActive = _getSize(scope.element.next().css('min-width'));
                             startPoint = e.pageX;
-//                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
+                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                                 //stopping resize if user trying to extension and the next column already minimised.
                                 return;
                             }
                             scope.element.next().removeAttr('style');
                             newWidth += offsetX;
-//                            console.debug('offsetX=%s, newWidth=%s, minWidth=%s', offsetX, newWidth, minWidth);
+                            console.debug('offsetX=%s, newWidth=%s, minWidth=%s', offsetX, newWidth, minWidth);
                             scope.element.css('width', Math.max(minWidth, newWidth));
                             tableController.resizeColumn();
                         });
                         _document.bind('mouseup', function (e) {
                             e.preventDefault();
-                            _body.removeClass('resizing');
+                            _body.removeClass('scrollable-resizing');
+                            coverPanel.removeClass('active');
                             _document.unbind('mousemove');
                             _document.unbind('mouseup');
                         });
@@ -233,7 +235,6 @@
                 }
             };
         }]);
-    ;
 
     function _getSize(sizeCss){
         return parseInt(sizeCss.replace(/px/, ''));

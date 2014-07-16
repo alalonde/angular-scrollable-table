@@ -24,6 +24,9 @@
     font-size: 8pt;
     color: #BDBDBD;
 }
+.scrollableContainer th .orderWrapper .active {
+    color: #464646;
+}
 
 .scrollArea {
     height: 100%;
@@ -40,11 +43,13 @@
     margin-bottom: 0;
     width: 100%;
     border: none;
+    table-layout: fixed;    /*  make table cell able to minimise */
     /*border-collapse: separate;*/
 }
 .scrollArea table th {
     padding: 0 !important;
     border: none !important;
+    min-width: 40px;
 }
 .scrollArea table .th-inner {
     overflow: hidden;
@@ -58,6 +63,15 @@
     padding-right: 11px;    /*  order icon width*/
     border-left: 1px solid #ddd;
 }
+
+/*  to hack fix firefox border issue    */
+@-moz-document url-prefix() {
+    .scrollArea table .th-inner {
+        border-right: 1px solid #ddd;
+        border-left: none;
+    }
+}
+
 .scrollArea table .th-inner .ng-scope {
     display: block;
     overflow: hidden;
@@ -81,6 +95,11 @@
 .scrollArea table tbody tr:last-child td {
     border-bottom: 1px solid #ddd;
 }
+.scrollArea table tbody tr td {
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .scrollableContainer th .resize-rod {
     position: absolute;
@@ -91,6 +110,9 @@
     height: 100%;
 }
 
-.resizing .scrollableContainer {
+.scrollable-resizing .scrollableContainer {
     cursor: col-resize;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
