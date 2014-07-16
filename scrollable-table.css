@@ -1,7 +1,7 @@
 .scrollableContainer {
     height: 300px;
     position: relative;
-    padding-top: 37px;
+    padding-top: 35px;
     margin-bottom: 30px;
     overflow: hidden;
 }
@@ -20,6 +20,11 @@
     right: 2px;
     cursor: pointer;
 }
+.scrollableContainer th .orderWrapper .order {
+    font-size: 8pt;
+    color: #BDBDBD;
+}
+
 .scrollArea {
     height: 100%;
     overflow-x: auto;
@@ -35,11 +40,11 @@
     margin-bottom: 0;
     width: 100%;
     border: none;
-    border-collapse: separate;
+    /*border-collapse: separate;*/
 }
 .scrollArea table th {
-    padding: 0;
-    border: none;
+    padding: 0 !important;
+    border: none !important;
 }
 .scrollArea table .th-inner {
     overflow: hidden;
@@ -50,6 +55,7 @@
     height: 36px;
     line-height: 36px;
     padding: 0 8px;
+    padding-right: 11px;    /*  order icon width*/
     border-left: 1px solid #ddd;
 }
 .scrollArea table .th-inner .ng-scope {
@@ -74,4 +80,17 @@
 }
 .scrollArea table tbody tr:last-child td {
     border-bottom: 1px solid #ddd;
+}
+
+.scrollableContainer th .resize-rod {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: col-resize;
+    width: 4px;
+    height: 100%;
+}
+
+.resizing .scrollableContainer {
+    cursor: col-resize;
 }
