@@ -213,14 +213,14 @@
                                 widthOfNextColOfActive = _getSize(scope.element.next().css('width')),
                                 minWidthOfNextColOfActive = _getSize(scope.element.next().css('min-width'));
                             startPoint = e.pageX;
-                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
+//                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                                 //stopping resize if user trying to extension and the next column already minimised.
                                 return;
                             }
                             scope.element.next().removeAttr('style');
                             newWidth += offsetX;
-                            console.debug('offsetX=%s, newWidth=%s, minWidth=%s', offsetX, newWidth, minWidth);
+//                            console.debug('offsetX=%s, newWidth=%s, minWidth=%s', offsetX, newWidth, minWidth);
                             scope.element.css('width', Math.max(minWidth, newWidth));
                             tableController.resizeColumn();
                         });
