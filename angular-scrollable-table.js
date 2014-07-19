@@ -220,8 +220,8 @@
                                 minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
                             movingPos = e.pageX;
                             e.preventDefault();
-                            if((offsetX > 0 && widthOfNextColOfActive - movedOffset <= minWidthOfNextColOfActive + 2)
-                                || (offsetX < 0 && widthOfActiveCol + movedOffset <= minWidthOfActiveCol + 2)){
+                            if((offsetX > 0 && widthOfNextColOfActive - movedOffset <= minWidthOfNextColOfActive)
+                                || (offsetX < 0 && widthOfActiveCol + movedOffset <= minWidthOfActiveCol)){
                                 //stopping resize if user trying to extension and the active/next column already minimised.
                                 return;
                             }
@@ -242,8 +242,7 @@
                                 minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
 //                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
-                                //stopping resize if user trying to extension and the next column already minimised.
-                                return;
+                                offsetX = widthOfNextColOfActive - minWidthOfNextColOfActive;
                             }
                             scope.element.next().removeAttr('style');
                             newWidth += offsetX;
