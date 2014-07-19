@@ -1,8 +1,7 @@
 .scrollableContainer {
-    height: 300px;
+    height: 310px;
     position: relative;
     padding-top: 35px;
-    margin-bottom: 30px;
     overflow: hidden;
 }
 .scrollableContainer .headerSpacer {
@@ -93,12 +92,20 @@
     border-top: none;
 }
 .scrollArea table tbody tr:last-child td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
 }
 .scrollArea table tbody tr td {
     border-bottom: 1px solid #ddd;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.scrollableContainer .scaler {
+    position: absolute;
+    top: 0px;
+    width: 2px;
+    height: 100%;
+    background-color: #CFCFCF;
 }
 
 .scrollableContainer th .resize-rod {

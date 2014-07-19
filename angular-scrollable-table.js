@@ -113,7 +113,7 @@
                                     width += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
                                 }
                             }
-                            var minWidth = _getSize(el.parent().css('min-width'));
+                            var minWidth = _getScale(el.parent().css('min-width'));
                             width = Math.max(minWidth, width);
                             el.css("width", width);
                             var title = el.parent().attr("title");
@@ -199,20 +199,47 @@
                     };
 
                     scope.resizing = function(e){
-                        var startPoint = e.pageX,
+                        var startPoint = _getScale(scope.element.children().css('left')) + _getScale(scope.element.children().css('width')),
+                            movingPos = e.pageX,
                             _document = angular.element(document),
                             _body = angular.element('body'),
-                            coverPanel = angular.element('.scrollableContainer .resizing-cover');
+                            coverPanel = angular.element('.scrollableContainer .resizing-cover'),
+                            scaler = angular.element('<div class="scaler">');
+
+                        _body.addClass('scrollable-resizing');
+                        coverPanel.addClass('active');
+                        angular.element('.scrollableContainer').append(scaler);
+                        scaler.css('left', startPoint);
+
                         _document.bind('mousemove', function (e){
-                            _body.addClass('scrollable-resizing');
-                            coverPanel.addClass('active');
+                            var offsetX = e.pageX - movingPos,
+                                movedOffset = _getScale(scaler.css('left')) - startPoint,
+                                widthOfActiveCol = _getScale(scope.element.css('width')),
+                                minWidthOfActiveCol = _getScale(scope.element.css('min-width')),
+                                widthOfNextColOfActive = _getScale(scope.element.next().css('width')),
+                                minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
+                            movingPos = e.pageX;
                             e.preventDefault();
-                            var offsetX = e.pageX - startPoint,
-                                newWidth = _getSize(scope.element.css('width')),
-                                minWidth = _getSize(scope.element.css('min-width')),
-                                widthOfNextColOfActive = _getSize(scope.element.next().css('width')),
-                                minWidthOfNextColOfActive = _getSize(scope.element.next().css('min-width'));
-                            startPoint = e.pageX;
+                            if((offsetX > 0 && widthOfNextColOfActive - movedOffset <= minWidthOfNextColOfActive + 2)
+                                || (offsetX < 0 && widthOfActiveCol + movedOffset <= minWidthOfActiveCol + 2)){
+                                //stopping resize if user trying to extension and the active/next column already minimised.
+                                return;
+                            }
+                            scaler.css('left', _getScale(scaler.css('left')) + offsetX);
+                        });
+                        _document.bind('mouseup', function (e) {
+                            e.preventDefault();
+                            scaler.remove();
+                            _body.removeClass('scrollable-resizing');
+                            coverPanel.removeClass('active');
+                            _document.unbind('mousemove');
+                            _document.unbind('mouseup');
+
+                            var offsetX = _getScale(scaler.css('left')) - startPoint,
+                                newWidth = _getScale(scope.element.css('width')),
+                                minWidth = _getScale(scope.element.css('min-width')),
+                                widthOfNextColOfActive = _getScale(scope.element.next().css('width')),
+                                minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
 //                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                                 //stopping resize if user trying to extension and the next column already minimised.
@@ -224,19 +251,12 @@
                             scope.element.css('width', Math.max(minWidth, newWidth));
                             tableController.resizeColumn();
                         });
-                        _document.bind('mouseup', function (e) {
-                            e.preventDefault();
-                            _body.removeClass('scrollable-resizing');
-                            coverPanel.removeClass('active');
-                            _document.unbind('mousemove');
-                            _document.unbind('mouseup');
-                        });
                     };
                 }
             };
         }]);
 
-    function _getSize(sizeCss){
+    function _getScale(sizeCss){
         return parseInt(sizeCss.replace(/px/, ''));
     }
 })(angular);

@@ -4,6 +4,19 @@
 var myApp = angular.module('myApp',['scrollable-table'])
 .service('Data', function() {
     this.get = function() {
+//        var res = [],
+//            size = 5000;
+//        for(var i = 0;i < size; i++){
+//            res.push({
+//               facility: 'facility_' + i,
+//               code: 'C-RD34_' + Math.ceil(Math.random() * 10),
+//               cost: Math.ceil(Math.random() * 100),
+//               conditionRating: Math.ceil(Math.random() * 1000),
+//               extent: Math.ceil(Math.random() * 50),
+//               planYear: Math.ceil(Math.random() * 1000)
+//            });
+//        }
+//        return res;
         return [{
           facility: "Atlanta",
           code: "C-RD34",
