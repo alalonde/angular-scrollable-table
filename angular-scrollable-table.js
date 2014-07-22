@@ -104,19 +104,26 @@
                         $element.find("table th .th-inner").each(function (index, el) {
                             el = angular.element(el);
                             //var padding = el.outerWidth() - el.width();
-                            var width = el.parent().width();// - padding;   //to made header fit with parent.
+                            var width = el.parent().width(),// - padding;   //to made header fit with parent.
                             // if it's the last header, add space for the scrollbar equivalent unless it's centered
-                            var lastCol = $element.find("table th:visible:last");
+                                lastCol = $element.find("table th:visible:last"),
+                                headerWidth = width;
                             if (lastCol.css("text-align") !== "center") {
                                 var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
                                 if (lastCol[0] == el.parent()[0] && hasScrollbar) {
-                                    width += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+                                    headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+                                    //th use the small one to avoid horizontal scroll
+                                    //and th-inner use bigger one to fill scroll space.
+                                    var _width = Math.min(headerWidth, width);
+                                    headerWidth = Math.max(headerWidth, width);
+                                    width = _width;
                                 }
                             }
-                            var minWidth = _getScale(el.parent().css('min-width'));
+                            var minWidth = _getScale(el.parent().css('min-width')),
+                                title = el.parent().attr("title");
                             width = Math.max(minWidth, width);
-                            el.css("width", width);
-                            var title = el.parent().attr("title");
+                            headerWidth = Math.max(minWidth, headerWidth);
+                            el.css("width", headerWidth);
                             if (!title) {
                                 title = el.children().length ? el.find(".title .ng-scope").html() : el.html();
                             }
