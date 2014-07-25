@@ -44,7 +44,8 @@
                     };
 
                     this.resizeColumn = function (){
-                        waitForRender().then(fixHeaderWidths);
+//                        waitForRender().then(fixHeaderWidths);
+                        fixHeaderWidths();
                     };
 
                     function defaultCompare(row1, row2) {
@@ -138,13 +139,53 @@
                         headersAreFixed.resolve();
                     }
 
-                    angular.element(window).on('resize', fixHeaderWidths);
+                    function _resetColumnsSize(tableWidth){
+                        var getHeaderLength = function(){
+                            var length = $element.find("table th").length;
+                            getHeaderLength = function(){
+                                return length;
+                            };
+                            return length;
+                        };
+                        $element.find("table th").each(function (index, el) {
+                            el = angular.element(el);
+                            var _width = el.data('width');
+                            if(_width == null){
+                                var headerLength = getHeaderLength();
+                                _width = newWidth / headerLength;
+                            } else if(_width.indexOf('px') > 0){
+                                _width = _getScale(_width);
+                            } else{     //percentage
+                                _width = Math.ceil(tableWidth * _getScale(_width) / 100);
+                            }
+                            el.css('width', _width + 'px');
+                        });
+                        waitForRender().then(fixHeaderWidths);
+                    }
+
+                    angular.element(window).on('resize', function(){
+                        $scope.$apply();
+                    });
+                    $scope.$watch(function(){
+                        return $element.find('.scrollableContainer').width();
+                    }, function(newWidth, oldWidth){
+                        var _containerWidth = newWidth,
+                            _containerOldWidth = oldWidth;
+                        if(_containerWidth * _containerOldWidth == 0){
+                            return;
+                        }
+                        _resetColumnsSize(_containerWidth);
+                    });
 
                     // when the data model changes, fix the header widths.  See the comments here:
                     // http://docs.angularjs.org/api/ng.$timeout
                     $scope.$watch('rows', function (newValue, oldValue) {
                         if (newValue) {
                             waitForRender().then(fixHeaderWidths);
+                            // clean sort status and scroll to top of table once records replaced.
+                            $scope.sortExpr = null;
+                            $element.find('.scrollArea').scrollTop(0);
+                            _resetColumnsSize($element.find('.scrollableContainer').width());
                         }
                     });
 
@@ -163,7 +204,7 @@
                 scope: true,
                 require: '^scrollableTable',
                 template:
-                    '<div>' +
+                    '<div class="box">' +
                         '<div ng-mouseenter="enter()" ng-mouseleave="leave()">' +
                             '<div class="title" ng-transclude></div>' +
                             '<span class="orderWrapper">' +
@@ -247,13 +288,11 @@
                                 minWidth = _getScale(scope.element.css('min-width')),
                                 widthOfNextColOfActive = _getScale(scope.element.next().css('width')),
                                 minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
-//                            console.debug('next width=%s, min-width=%s', widthOfNextColOfActive, minWidthOfNextColOfActive);
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                                 offsetX = widthOfNextColOfActive - minWidthOfNextColOfActive;
                             }
                             scope.element.next().removeAttr('style');
                             newWidth += offsetX;
-//                            console.debug('offsetX=%s, newWidth=%s, minWidth=%s', offsetX, newWidth, minWidth);
                             scope.element.css('width', Math.max(minWidth, newWidth));
                             tableController.resizeColumn();
                         });
@@ -263,6 +302,6 @@
         }]);
 
     function _getScale(sizeCss){
-        return parseInt(sizeCss.replace(/px/, ''));
+        return parseInt(sizeCss.replace(/px|%/, ''));
     }
 })(angular);
