@@ -113,11 +113,7 @@
                                 var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
                                 if (lastCol[0] == el.parent()[0] && hasScrollbar) {
                                     headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                    //th use the small one to avoid horizontal scroll
-                                    //and th-inner use bigger one to fill scroll space.
-                                    var _width = Math.min(headerWidth, width);
                                     headerWidth = Math.max(headerWidth, width);
-                                    width = _width;
                                 }
                             }
                             var minWidth = _getScale(el.parent().css('min-width')),
@@ -130,9 +126,11 @@
                             }
                             el.attr("title", title.trim());
 
-                            //following are resize stuff, to made th-inner position correct when dragging column.
-                            // declare width to TH element to fix width of left columns when resizing column.
-                            el.parent().css('width', width);
+                            //following are resize stuff, to made th-inner position correct.
+                            //last column's width should be automaically, to avoid horizontal scroll.
+                            if (lastCol[0] != el.parent()[0]){
+                                el.parent().css('width', width);
+                            }
                             el.css("left", headerPos);
                             headerPos += width;
                         });
@@ -147,8 +145,13 @@
                             };
                             return length;
                         };
+                        var lastCol = $element.find("table th:last");
                         $element.find("table th").each(function (index, el) {
                             el = angular.element(el);
+                            if(lastCol.get(0) == el.get(0)){
+                                //last column's width should be automaically, to avoid horizontal scroll.
+                                return;
+                            }
                             var _width = el.data('width');
                             if(_width == null){
                                 var headerLength = getHeaderLength();
@@ -158,6 +161,7 @@
                             } else{     //percentage
                                 _width = Math.ceil(tableWidth * _getScale(_width) / 100);
                             }
+                            console.debug('%s = %s', index, _width);
                             el.css('width', _width + 'px');
                         });
                         waitForRender().then(fixHeaderWidths);
@@ -167,7 +171,7 @@
                         $scope.$apply();
                     });
                     $scope.$watch(function(){
-                        return $element.find('.scrollableContainer').width();
+                        return $element.find('.scrollArea').width();
                     }, function(newWidth, oldWidth){
                         var _containerWidth = newWidth,
                             _containerOldWidth = oldWidth;
@@ -185,7 +189,7 @@
                             // clean sort status and scroll to top of table once records replaced.
                             $scope.sortExpr = null;
                             $element.find('.scrollArea').scrollTop(0);
-                            _resetColumnsSize($element.find('.scrollableContainer').width());
+                            _resetColumnsSize($element.find('.scrollArea').width());
                         }
                     });
 
@@ -198,7 +202,7 @@
                 }]
             };
         }])
-        .directive('sortableHeader', ['$timeout', function (timeout) {
+        .directive('sortableHeader', [function () {
             return {
                 transclude: true,
                 scope: true,
@@ -247,7 +251,7 @@
                     };
 
                     scope.resizing = function(e){
-                        var startPoint = _getScale(scope.element.children().css('left')) + _getScale(scope.element.children().css('width')),
+                        var startPoint = _getScale(scope.element.children().css('left')) + scope.element.children().width(),
                             movingPos = e.pageX,
                             _document = angular.element(document),
                             _body = angular.element('body'),
@@ -262,9 +266,9 @@
                         _document.bind('mousemove', function (e){
                             var offsetX = e.pageX - movingPos,
                                 movedOffset = _getScale(scaler.css('left')) - startPoint,
-                                widthOfActiveCol = _getScale(scope.element.css('width')),
+                                widthOfActiveCol = scope.element.width(),
                                 minWidthOfActiveCol = _getScale(scope.element.css('min-width')),
-                                widthOfNextColOfActive = _getScale(scope.element.next().css('width')),
+                                widthOfNextColOfActive = scope.element.next().width(),
                                 minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
                             movingPos = e.pageX;
                             e.preventDefault();
@@ -284,9 +288,9 @@
                             _document.unbind('mouseup');
 
                             var offsetX = _getScale(scaler.css('left')) - startPoint,
-                                newWidth = _getScale(scope.element.css('width')),
+                                newWidth = scope.element.width(),
                                 minWidth = _getScale(scope.element.css('min-width')),
-                                widthOfNextColOfActive = _getScale(scope.element.next().css('width')),
+                                widthOfNextColOfActive = scope.element.next().width(),
                                 minWidthOfNextColOfActive = _getScale(scope.element.next().css('min-width'));
                             if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                                 offsetX = widthOfNextColOfActive - minWidthOfNextColOfActive;
