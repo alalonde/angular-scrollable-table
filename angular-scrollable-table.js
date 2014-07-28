@@ -44,7 +44,6 @@
                     };
 
                     this.resizeColumn = function (){
-//                        waitForRender().then(fixHeaderWidths);
                         fixHeaderWidths();
                     };
 
@@ -138,14 +137,8 @@
                     }
 
                     function _resetColumnsSize(tableWidth){
-                        var getHeaderLength = function(){
-                            var length = $element.find("table th").length;
-                            getHeaderLength = function(){
-                                return length;
-                            };
-                            return length;
-                        };
-                        var lastCol = $element.find("table th:last");
+                        var lastCol = $element.find("table th:last"),
+                            columnLength = $element.find("table th").length;
                         $element.find("table th").each(function (index, el) {
                             el = angular.element(el);
                             if(lastCol.get(0) == el.get(0)){
@@ -153,15 +146,12 @@
                                 return;
                             }
                             var _width = el.data('width');
-                            if(_width == null){
-                                var headerLength = getHeaderLength();
-                                _width = newWidth / headerLength;
-                            } else if(_width.indexOf('px') > 0){
-                                _width = _getScale(_width);
-                            } else{     //percentage
+                            if(/\d+%$/.test(_width)){    //percentage
                                 _width = Math.ceil(tableWidth * _getScale(_width) / 100);
+                            } else {
+                                // if data-width not exist, use average width for each columns.
+                                _width = tableWidth / columnLength;
                             }
-                            console.debug('%s = %s', index, _width);
                             el.css('width', _width + 'px');
                         });
                         waitForRender().then(fixHeaderWidths);
