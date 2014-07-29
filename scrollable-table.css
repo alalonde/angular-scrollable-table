@@ -79,7 +79,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.scrollArea table tr th:first-child .th-inner {
+.scrollArea table tr th:first-child .th-inner .box {
     border-left: none;
 }
 .scrollArea table .th-inner.condensed {
