@@ -105,7 +105,7 @@
             }
                                                
             var headerPos = 1;//  1 is the width of right border;
-            $element.find("table th .th-inner").each(function (index, el) {
+            $element.find("table th .th-inner:visible").each(function (index, el) {
               el = angular.element(el);
               //var padding = el.outerWidth() - el.width();
               var width = el.parent().width(),// - padding;   //to made header fit with parent.
@@ -192,6 +192,10 @@
 
           $element.find(".scrollArea").scroll(function (event) {
             $element.find("thead th .th-inner").css('margin-left', 0 - event.target.scrollLeft);
+          });
+
+          $scope.$on("renderScrollableTable", function() {
+            $timeout(fixHeaderWidths);
           });
         }]
       };

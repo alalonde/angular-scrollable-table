@@ -33,7 +33,7 @@
                <th sortable-header col="code" data-width="20%">Unit code</th>
                <th sortable-header col="cost" data-width="10%">Cost</th>
                <th sortable-header col="conditionRating" data-width="20%">Condition score</th>
-               <th col="extent" data-width="20%">Not sortable</th>
+               <th ng-show="toggleColumn" col="extent" data-width="20%">Not sortable</th>
                <th sortable-header col="planYear" comparator-fn="comparator" data-width="10%">Plan year</th>
             </tr>
           </thead>
@@ -44,7 +44,7 @@
               <td>{{ response.code }}</td>
               <td>{{ response.cost }}</td>
               <td class="cr">{{ response.conditionRating }}</td>
-              <td>{{ response.extent }}</td>
+              <td ng-show="toggleColumn" >{{ response.extent }}</td>
               <td>{{ response.planYear }}</td>
             </tr>
           </tbody>
@@ -57,6 +57,7 @@
       <div style="margin-top: 20px">
         <button class="btn btn-primary" type="button" ng-click="changeRecord()">Change record</button>
         <button class="btn btn-default" type="button" ng-click="replaceRecords()">Undo change</button>
+        <button class="btn btn-default" type="button" ng-click="toggleCol()">Show/hide column</button>
       </div>
     </div>
   </body>
