@@ -42,7 +42,6 @@
     margin-bottom: 0;
     width: 100%;
     border: none;
-    table-layout: fixed;    /*  make table cell able to minimise */
     /*border-collapse: separate;*/
 }
 .scrollArea table th {
