@@ -95,7 +95,7 @@ var myApp = angular.module('myApp',['scrollable-table'])
     return r1.planYear > r2.planYear ? 1 : -1;
   };
 })
-.controller('MyCtrl', function($scope, Data, Comparators) {
+.controller('MyCtrl', function($scope, $timeout, $window, Data, Comparators) {
     $scope.visibleProjects = Data.get();
     $scope.comparator = Comparators.year;
     $scope.facilities = [];
@@ -113,6 +113,11 @@ var myApp = angular.module('myApp',['scrollable-table'])
 
     $scope.replaceRecords = function(){
         $scope.visibleProjects = Data.get();
+    };
+
+    $scope.toggleCol = function() {
+      $scope.toggleColumn = !$scope.toggleColumn;
+      $scope.$broadcast("renderScrollableTable");
     };
 })
 ;

@@ -8,6 +8,7 @@ This one features a fixed header that elegantly handles overly-long column heade
 Other features:
 * Scroll to row
 * Sortable header with custom comparator functions
+* Resizable columns
 
 Usage:
 `angular.module('myApp', ['scrollable-table', ...]);`
@@ -54,10 +55,14 @@ where the controller contains
 
 Third-party dependencies: 
 * jQuery
-* Bootstrap CSS (for styling, optional)
+* Bootstrap 3 CSS (for styling, optional.  See the 'bootstrap2' branch also)
 
 Demo here: http://jsfiddle.net/Gary_Li/T9Wek/
 
 More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-header-scrollable-table/
 
 License: MIT
+
+### Updates
+
+8/22/14 : Created a 'bootstrap2' branch.  Merged a pull request into master that supports bootstrap 2 and resizable columns.

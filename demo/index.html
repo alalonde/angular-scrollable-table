@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Angular-scrollable-table directive demo</title>
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
-        rel="stylesheet" type="text/css">
+          rel="stylesheet" type="text/css">
     <link href='../scrollable-table.css' rel="stylesheet" type="text/css">
     <style type="text/css">
-      body {
-        margin: 20px;
-      }
+        body {
+            margin: 20px;
+        }
 
-      .test-container {
-          /*width: 800px;*/
-      }
+        .test-container {
+            /*width: 800px;*/
+        }
     </style>
     <script type="text/javascript" src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="http://code.angularjs.org/1.2.19/angular.js"></script>
     <script type="text/javascript" src="../angular-scrollable-table.js"></script>
     <script type="text/javascript" src="app.js"></script>
-  </head>
-  <body ng-app="myApp" ng-init="rootWidth=600;">
-    <div ng-controller="MyCtrl" class="test-container" ng-style="{'width': rootWidth+'px'}">
-        <button type="button" ng-click="changeRecord()">change record</button>
-        <button type="button" ng-click="replaceRecords()">replace records</button>
-        <button type="button" ng-click="rootWidth=800;">Bigger</button>
-        <button type="button" ng-click="rootWidth=400">reset</button>
-      <scrollable-table watch="visibleProjects">
+</head>
+<body ng-app="myApp" ng-init="rootWidth=600;">
+<div ng-controller="MyCtrl" class="test-container" ng-style="{'width': rootWidth+'px'}">
+    <button type="button" class="btn btn-default" ng-click="changeRecord()">change record</button>
+    <button type="button" class="btn btn-default" ng-click="replaceRecords()">replace records</button>
+    <button class="btn btn-default" type="button" ng-click="toggleCol()">Show/hide column</button>
+    <button type="button" class="btn btn-default" ng-click="rootWidth=800;">Bigger</button>
+    <button type="button" class="btn btn-default" ng-click="rootWidth=400">Smaller</button>
+    <scrollable-table watch="visibleProjects">
         <table class="table table-striped table-bordered">
-          <thead>
+            <thead>
             <tr>
-               <th sortable-header col="facility" resizable>Facility</th>
-               <th sortable-header col="code" resizable>Unit code</th>
-               <th sortable-header col="cost">Cost</th>
-               <th sortable-header col="conditionRating">Condition score</th>
-               <th sortable-header col="extent">Replace %</th>
-               <th sortable-header col="planYear" comparator-fn="comparator">Plan year</th>
+                <th sortable-header col="facility" resizable>Facility</th>
+                <th sortable-header col="code" resizable>Unit code</th>
+                <th sortable-header col="cost">Cost</th>
+                <th sortable-header col="conditionRating">Condition score</th>
+                <th ng-show="toggleColumn" col="extent">Not sortable</th>
+                <th sortable-header col="planYear" comparator-fn="comparator">Plan year</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="response in visibleProjects" row-id="{{ response.facility }}" 
+            </thead>
+            <tbody>
+            <tr ng-repeat="response in visibleProjects" row-id="{{ response.facility }}"
                 ng-class="{info: selected == response.facility}" >
-              <td>{{ response.facility }}</td>
-              <td>{{ response.code }}</td>
-              <td>{{ response.cost }}</td>
-              <td class="cr">{{ response.conditionRating }}</td>
-              <td>{{ response.extent }}</td>
-              <td>{{ response.planYear }}</td>
+                <td>{{ response.facility }}</td>
+                <td>{{ response.code }}</td>
+                <td>{{ response.cost }}</td>
+                <td class="cr">{{ response.conditionRating }}</td>
+                <td ng-show="toggleColumn">{{ response.extent }}</td>
+                <td>{{ response.planYear }}</td>
             </tr>
-          </tbody>
+            </tbody>
         </table>
-      </scrollable-table>
-      <div>
+    </scrollable-table>
+    <div>
         <label>Select a facility:</label>
         <select ng-model="selected" ng-options="f for f in facilities"></select>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>
-

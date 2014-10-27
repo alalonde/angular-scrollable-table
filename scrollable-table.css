@@ -59,7 +59,7 @@
     line-height: 36px;
 }
 
-.scrollArea table .th-inner .box {
+.scrollArea table th .box {
     padding: 0 8px;
     padding-right: 11px;    /*  order icon width*/
     border-left: 1px solid #ddd;
@@ -67,7 +67,7 @@
 
 /*  to hack fix firefox border issue    */
 @-moz-document url-prefix() {
-    .scrollArea table .th-inner .box{
+    .scrollArea table th .box{
         border-right: 1px solid #ddd;
         border-left: none;
     }
@@ -78,7 +78,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.scrollArea table tr th:first-child .th-inner .box {
+.scrollArea table tr th:first-child th .box {
     border-left: none;
 }
 .scrollArea table .th-inner.condensed {
