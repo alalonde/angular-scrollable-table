@@ -27,14 +27,14 @@
     <button type="button" class="btn btn-default" ng-click="changeRecord()">change record</button>
     <button type="button" class="btn btn-default" ng-click="replaceRecords()">replace records</button>
     <button class="btn btn-default" type="button" ng-click="toggleCol()">Show/hide column</button>
-    <button type="button" class="btn btn-default" ng-click="rootWidth=800;">Bigger</button>
-    <button type="button" class="btn btn-default" ng-click="rootWidth=400">Smaller</button>
-    <scrollable-table watch="visibleProjects">
+    <button type="button" class="btn btn-default" ng-click="rootWidth=800;">Parent container resize to bigger</button>
+    <button type="button" class="btn btn-default" ng-click="rootWidth=400">Parent container resize to Smaller</button>
+    <scrollable-table watch="visibleProjects" resizable>
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th sortable-header col="facility" resizable>Facility</th>
-                <th sortable-header col="code" resizable>Unit code</th>
+                <th>Facility</th>
+                <th sortable-header col="code">Unit code</th>
                 <th sortable-header col="cost">Cost</th>
                 <th sortable-header col="conditionRating">Condition score</th>
                 <th ng-show="toggleColumn" col="extent">Not sortable</th>
