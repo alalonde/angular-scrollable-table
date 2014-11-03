@@ -107,15 +107,6 @@ var myApp = angular.module('myApp',['scrollable-table'])
        $scope.$broadcast("rowSelected", fac);
     });
 
-    $scope.changeRecord = function(){
-        $scope.visibleProjects[3].code = 'aaabbbccc';
-        $scope.$broadcast("renderScrollableTable");
-    };
-
-    $scope.replaceRecords = function(){
-        $scope.visibleProjects = Data.get();
-    };
-
     $scope.toggleCol = function() {
       $scope.toggleColumn = !$scope.toggleColumn;
       $scope.$broadcast("renderScrollableTable");
