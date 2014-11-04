@@ -10,9 +10,9 @@
           sortFn: '='
         },
         template: '<div class="scrollableContainer">' +
-          '<div class="headerSpacer"></div>' +
-          '<div class="scrollArea" ng-transclude></div>' +
-          '</div>',
+                    '<div class="headerSpacer"></div>' +
+                    '<div class="scrollArea" ng-transclude></div>' +
+                  '</div>',
         controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
           // define an API for child directives to view and modify sorting parameters
           this.getSortExpr = function () {
@@ -139,7 +139,7 @@
               headerWidth = Math.max(minWidth, headerWidth);
               el.css("width", headerWidth);
               if (!title) {
-                // ordinary column(not soortableHeader) has box child div element that contained title string.
+                // ordinary column(not sortableHeader) has box child div element that contained title string.
                 title = el.find(".title .ng-scope").html() || el.find(".box").html();
               }
               el.attr("title", title.trim());
@@ -167,7 +167,6 @@
           });
 
           $scope.$on("renderScrollableTable", function() {
-//            $timeout(fixHeaderWidths);
             renderChains($element.find('.scrollArea').width());
           });
 
@@ -202,16 +201,15 @@
         template:
           '<div class="box">' +
             '<div ng-mouseenter="enter()" ng-mouseleave="leave()">' +
-            '<div class="title" ng-transclude></div>' +
-            '<span class="orderWrapper">' +
-            '<span class="order" ng-show="focused || isActive()" ' +
-            'ng-click="toggleSort($event)" ng-class="{active:isActive()}">' +
-            '<i ng-show="isAscending()" class="glyphicon glyphicon-chevron-up"></i>' +
-            '<i ng-show="!isAscending()" class="glyphicon glyphicon-chevron-down"></i>' +
-            '</span>' +
-            '</span>' +
+              '<div class="title" ng-transclude></div>' +
+              '<span class="orderWrapper">' +
+                '<span class="order" ng-show="focused || isActive()" ng-click="toggleSort($event)" ng-class="{active:isActive()}">' +
+                  '<i ng-show="isAscending()" class="glyphicon glyphicon-chevron-up"></i>' +
+                  '<i ng-show="!isAscending()" class="glyphicon glyphicon-chevron-down"></i>' +
+                '</span>' +
+              '</span>' +
             '</div>' +
-            '</div>',
+          '</div>',
         link: function (scope, elm, attrs, tableController) {
           var expr = attrs.on || "a as a." + attrs.col;
           scope.element = angular.element(elm);
@@ -288,9 +286,10 @@
               var offsetX = e.pageX - movingPos,
                 movedOffset = _getScale(scaler.css('left')) - startPoint,
                 widthOfActiveCol = thElm.width(),
+                nextElm = thElm.nextAll('th:visible').first(),
                 minWidthOfActiveCol = _getScale(thElm.css('min-width')),
-                widthOfNextColOfActive = thElm.next().width(),
-                minWidthOfNextColOfActive = _getScale(thElm.next().css('min-width'));
+                widthOfNextColOfActive = nextElm.width(),
+                minWidthOfNextColOfActive = _getScale(nextElm.css('min-width'));
               movingPos = e.pageX;
               e.preventDefault();
               if((offsetX > 0 && widthOfNextColOfActive - movedOffset <= minWidthOfNextColOfActive)
@@ -311,8 +310,9 @@
               var offsetX = _getScale(scaler.css('left')) - startPoint,
                 newWidth = thElm.width(),
                 minWidth = _getScale(thElm.css('min-width')),
-                widthOfNextColOfActive = thElm.next().width(),
-                minWidthOfNextColOfActive = _getScale(thElm.next().css('min-width')),
+                nextElm = thElm.nextAll('th:visible').first(),
+                widthOfNextColOfActive = nextElm.width(),
+                minWidthOfNextColOfActive = _getScale(nextElm.css('min-width')),
                 tableElement = tableController.getTableElement().find('.scrollArea table');
 
               //hold original width of cells, to display cells as their original width after turn table-layout to fixed.
@@ -329,16 +329,16 @@
               if(offsetX > 0 && widthOfNextColOfActive - offsetX <= minWidthOfNextColOfActive){
                 offsetX = widthOfNextColOfActive - minWidthOfNextColOfActive;
               }
-              thElm.next().removeAttr('style');
+              nextElm.removeAttr('style');
               newWidth += offsetX;
               thElm.css('width', Math.max(minWidth, newWidth));
-              thElm.next().css('width', widthOfNextColOfActive - offsetX);
+              nextElm.css('width', widthOfNextColOfActive - offsetX);
               tableController.renderTalble().then(resizeHeaderWidth());
             });
           };
 
           function _init(){
-            var thInnerElms = elm.find('table th .th-inner');
+            var thInnerElms = elm.find('table th:not(:last-child) .th-inner');
             if(thInnerElms.find('.resize-rod').length == 0){
               tableController.getTableElement().find('.scrollArea table').css('table-layout', 'auto');
               var resizeRod = angular.element('<div class="resize-rod" ng-mousedown="resizing($event)"></div>');
