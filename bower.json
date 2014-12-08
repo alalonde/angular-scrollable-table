@@ -1,0 +1,21 @@
+{
+  "name": "angular-scrollable-table",
+  "main": "angular-scrollable-table.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/alalonde/angular-scrollable-table",
+  "authors": [
+    "Alec LaLonde <alec@boxelderweb.com>"
+  ],
+  "description": "Table directive for AngularJS for making fixed headers and scrollable tables",
+  "keywords": [
+    "scrollable-table"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
