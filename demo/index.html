@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Angular-scrollable-table directive demo</title>
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
           rel="stylesheet" type="text/css">
     <link href='../scrollable-table.css' rel="stylesheet" type="text/css">
     <style type="text/css">
@@ -29,7 +29,7 @@
     <button class="btn btn-default" type="button" ng-click="toggleCol()">Show/hide column</button>
     <button type="button" class="btn btn-default" ng-click="rootWidth=800;">Bigger</button>
     <button type="button" class="btn btn-default" ng-click="rootWidth=400">Smaller</button>
-    <scrollable-table watch="visibleProjects">
+    <scrollable-table watch="visibleProjects" resizable>
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
