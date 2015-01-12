@@ -6,7 +6,7 @@
   "authors": [
     "Alec LaLonde <alec@boxelderweb.com>"
   ],
-  "description": "Table directive for AngularJS for making fixed headers and scrollable tables",
+  "description": "A fixed-header scrollable table for AngularJS, featuring resizable columns and sorting",
   "keywords": [
     "scrollable-table"
   ],
