@@ -109,6 +109,7 @@ var myApp = angular.module('myApp',['scrollable-table'])
 
     $scope.changeRecord = function(){
         $scope.visibleProjects[3].code = 'aaabbbccc';
+        $scope.$broadcast("renderScrollableTable");
     };
 
     $scope.replaceRecords = function(){
