@@ -250,8 +250,8 @@
       return {
         restrict: 'A',
         priority: 0,
-        scope: true,
-        require: '^scrollableTable',
+        scope: false,
+        require: 'scrollableTable',
         link: function postLink(scope, elm, attrs, tableController){
           tableController.appendTableResizingHandler(function(){
             _init();
