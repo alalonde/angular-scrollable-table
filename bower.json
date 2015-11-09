@@ -1,6 +1,9 @@
 {
   "name": "angular-scrollable-table",
-  "main": "angular-scrollable-table.js",
+  "main": [
+    "angular-scrollable-table.js",
+    "scrollable-table.css"
+  ],
   "version": "1.0.0",
   "homepage": "https://github.com/alalonde/angular-scrollable-table",
   "authors": [
