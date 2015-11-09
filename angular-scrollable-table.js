@@ -171,7 +171,9 @@
           });
 
           angular.element(window).on('resize', function(){
-            $scope.$apply();
+            $timeout(function(){
+              $scope.$apply();
+            });
           });
           $scope.$watch(function(){
             return $element.find('.scrollArea').width();
