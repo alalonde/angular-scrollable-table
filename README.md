@@ -10,10 +10,23 @@ Other features:
 * Sortable header with custom comparator functions
 * Resizable columns
 
-Usage:
+# Installing
+
+## Bower
+
+```bash
+    bower install angular-scrollable-table --save
+```
+
+```html
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-sortable/dist/ng-sortable.min.css">
+    <script src="bower_components/ng-sortable/dist/ng-sortable.min.js">
+```
+
+# Usage:
 `angular.module('myApp', ['scrollable-table', ...]);`
 
-Example:
+## Example:
 
 ```
 <scrollable-table watch="visibleProjects">
