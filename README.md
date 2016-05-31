@@ -57,7 +57,7 @@ Third-party dependencies:
 * jQuery
 * Bootstrap 3 CSS (for styling, optional.  See the 'bootstrap2' branch also)
 
-Demo here: http://jsfiddle.net/Gary_Li/T9Wek/
+Demo here: https://jsfiddle.net/alalonde/BrTzg/
 
 More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-header-scrollable-table/
 
