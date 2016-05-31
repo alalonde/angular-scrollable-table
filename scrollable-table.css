@@ -35,6 +35,7 @@
     /*  the implementation of this is still quite buggy; specifically, it doesn't like the 
         absolutely positioned headers within 
     -webkit-overflow-scrolling: touch;  */
+    -webkit-overflow-scrolling: auto; 
 }
 .scrollArea table {
     overflow-x: hidden;
