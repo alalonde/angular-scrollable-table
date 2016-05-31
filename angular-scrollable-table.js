@@ -140,7 +140,7 @@
               el.css("width", headerWidth);
               if (!title) {
                 // ordinary column(not sortableHeader) has box child div element that contained title string.
-                title = el.find(".title .ng-scope").html() || el.find(".box").html();
+                title = el.find(".title .ng-scope").text() || el.find(".box").text();
               }
               el.attr("title", title.trim());
             });
