@@ -38,7 +38,7 @@
     -webkit-overflow-scrolling: auto; 
 }
 .scrollArea table {
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
     margin-bottom: 0;
     width: 100%;
