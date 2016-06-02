@@ -63,6 +63,7 @@ More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-hea
 
 License: MIT
 
-### Updates
+### FAQ
 
-8/22/14 : Created a 'bootstrap2' branch.  Merged a pull request into master that supports bootstrap 2 and resizable columns.
+1. How do I change the height of the table?
+https://jsfiddle.net/alalonde/qgc2gp7d/1/
