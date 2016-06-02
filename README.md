@@ -66,4 +66,4 @@ License: MIT
 ### FAQ
 
 1. How do I change the height of the table?
-https://jsfiddle.net/alalonde/qgc2gp7d/1/
+   https://jsfiddle.net/alalonde/qgc2gp7d/1/
