@@ -11,11 +11,14 @@ Other features:
 * Resizable columns
 
 Usage:
-`angular.module('myApp', ['scrollable-table', ...]);`
+
+```js
+angular.module('myApp', ['scrollable-table', ...]);
+```
 
 Example:
 
-```
+```html
 <scrollable-table watch="visibleProjects">
   <table class="table table-striped table-bordered">
     <thead>
@@ -37,7 +40,7 @@ Example:
     
 where the controller contains
 
-```
+```js
     $scope.visibleProjects = [{
       facility: "Atlanta",
       code: "C-RD34",
