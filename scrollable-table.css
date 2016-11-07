@@ -8,7 +8,7 @@
     border: 1px solid #d5d5d5;
     border-bottom-color: #bbb;
     position: absolute;
-    height: 36px;
+    height: 72px;
     top: 0;
     right: 0;
     left: 0;
@@ -32,10 +32,10 @@
     overflow-x: auto;
     overflow-y: auto;
     border: 1px solid #d5d5d5;
-    /*  the implementation of this is still quite buggy; specifically, it doesn't like the 
-        absolutely positioned headers within 
+    /*  the implementation of this is still quite buggy; specifically, it doesn't like the
+        absolutely positioned headers within
     -webkit-overflow-scrolling: touch;  */
-    -webkit-overflow-scrolling: auto; 
+    -webkit-overflow-scrolling: auto;
 }
 .scrollArea table {
     overflow-x: auto;
@@ -50,12 +50,23 @@
     border: none !important;
     min-width: 40px;
 }
+
+.scrollArea table .th-inner-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    top: 0px!important;
+    height: 36px;
+    line-height: 36px;
+}
+
 .scrollArea table .th-inner {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
-    top: 0;
+    top: 36px;
     height: 36px;
     line-height: 36px;
 }
