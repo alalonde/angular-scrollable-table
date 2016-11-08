@@ -45,7 +45,7 @@
               }
             };
 
-            this.renderTalble = function (){
+            this.renderTable = function (){
               return waitForRender().then(fixHeaderWidths);
             };
 
@@ -202,14 +202,12 @@
             $scope.asc = !$attrs.hasOwnProperty("desc");
             $scope.sortAttr = $attrs.sortAttr;
 
-            var headerElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner";
+            var headerElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner",
+                secondHeaderElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner-header";
             $element.find(".scrollArea").scroll(function (event) {
-              $element.find(headerElementToFakeScroll).css('margin-left', 0 - event.target.scrollLeft);
-            });
-
-            var secondHeaderElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner-header";
-            $element.find(".scrollArea").scroll(function (event) {
-              $element.find(secondHeaderElementToFakeScroll).css('margin-left', 0 - event.target.scrollLeft);
+              var IEWasAMistake = event.target.scrollLeft;
+              $element.find(secondHeaderElementToFakeScroll).css('margin-left', 0 - IEWasAMistake);
+              $element.find(headerElementToFakeScroll).css('margin-left', 0 - IEWasAMistake);
             });
 
             $scope.$on("renderScrollableTable", function() {
@@ -387,7 +385,7 @@
                 newWidth += offsetX;
                 thElm.css('width', Math.max(minWidth, newWidth));
                 nextElm.css('width', widthOfNextColOfActive - offsetX);
-                tableController.renderTalble().then(resizeHeaderWidth());
+                tableController.renderTable().then(resizeHeaderWidth());
               });
             };
 
@@ -487,7 +485,7 @@
                 }
                 el.css('width', _width + 'px');
               });
-              tableController.renderTalble().then(resizeHeaderWidth());
+              tableController.renderTable().then(resizeHeaderWidth());
             }
           }
         }

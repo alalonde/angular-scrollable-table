@@ -1,14 +1,14 @@
 .scrollableContainer {
     height: 310px;
     position: relative;
-    padding-top: 35px;
+    padding-top: 86px;
     overflow: hidden;
 }
 .scrollableContainer .headerSpacer {
     border: 1px solid #d5d5d5;
     border-bottom-color: #bbb;
     position: absolute;
-    height: 72px;
+    height: 88px;
     top: 0;
     right: 0;
     left: 0;
@@ -59,21 +59,23 @@
     top: 0px!important;
     height: 36px;
     line-height: 36px;
+    border-right: 1px solid #ddd;
 }
 
 .scrollArea table .th-inner {
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
     top: 36px;
-    height: 36px;
-    line-height: 36px;
+    height: 54px;
+    line-height: 54px;
+    padding: 8px;
 }
 
 .scrollArea table th .box {
-    padding: 0 8px;
-    padding-right: 11px;    /*  order icon width*/
     border-left: 1px solid #ddd;
 }
 
