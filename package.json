@@ -1,0 +1,20 @@
+{
+  "name": "angular-scrollable-table",
+  "keywords": [
+    "angular",
+    "table",
+    "scrollable",
+    "fixed-header"
+  ],
+  "author": "Alec LaLonde",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "compress": "uglifyjs --compress --mangle  -o angular-scrollable-table.min.js -- angular-scrollable-table.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "lite-server": "2.2.2",
+    "uglify-js": "^2.7.5"
+  }
+}
