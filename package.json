@@ -7,14 +7,18 @@
     "fixed-header"
   ],
   "author": "Alec LaLonde",
-  "version": "1.0.0",
+  "description": "A fixed-header scrollable table which auto-truncates overly-long headers, has resizable columns and sortable headers",
+  "version": "1.0.1",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alalonde/angular-scrollable-table"
+  },
   "scripts": {
     "compress": "uglifyjs --compress --mangle  -o angular-scrollable-table.min.js -- angular-scrollable-table.js"
   },
   "dependencies": {},
   "devDependencies": {
-    "lite-server": "2.2.2",
     "uglify-js": "^2.7.5"
   }
 }
