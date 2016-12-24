@@ -10,7 +10,7 @@ Other features:
 * Sortable header with custom comparator functions
 * Resizable columns
 
-Installation:
+## Installation
 ```
 npm install angular-scrollable-table
 ```
@@ -19,13 +19,13 @@ OR
 bower install angular-scrollable-table
 ```
 
-Usage:
+## Usage
 
 ```js
 angular.module('myApp', ['scrollable-table', ...]);
 ```
 
-Example:
+## Example
 
 ```html
 <scrollable-table watch="visibleProjects">
@@ -75,7 +75,7 @@ More infomation here: http://blog.boxelderweb.com/2013/12/19/angularjs-fixed-hea
 
 License: MIT
 
-### FAQ
+## FAQ
 
 1. How do I change the height of the table?
 
