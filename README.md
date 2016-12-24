@@ -10,6 +10,15 @@ Other features:
 * Sortable header with custom comparator functions
 * Resizable columns
 
+Installation:
+```
+npm install angular-scrollable-table
+```
+OR
+```
+bower install angular-scrollable-table
+```
+
 Usage:
 
 ```js
