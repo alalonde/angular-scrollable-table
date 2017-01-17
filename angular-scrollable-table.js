@@ -173,10 +173,14 @@
             renderChains($element.find('.scrollArea').width());
           });
 
-          angular.element(window).on('resize', function(){
+          var onResizeCallback = function(){
             $timeout(function(){
               $scope.$apply();
             });
+          };
+          angular.element(window).on('resize', onResizeCallback);
+          $scope.$on('$destroy', function() {
+            angular.element(window).off('resize', onResizeCallback);
           });
           $scope.$watch(function(){
             return $element.find('.scrollArea').width();
