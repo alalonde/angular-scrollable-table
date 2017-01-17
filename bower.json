@@ -4,7 +4,6 @@
     "angular-scrollable-table.js",
     "scrollable-table.css"
   ],
-  "version": "1.1.2",
   "homepage": "https://github.com/alalonde/angular-scrollable-table",
   "authors": [
     "Alec LaLonde <alec@boxelderweb.com>"
