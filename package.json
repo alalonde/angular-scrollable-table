@@ -8,7 +8,7 @@
   ],
   "author": "Alec LaLonde",
   "description": "A fixed-header scrollable table which auto-truncates overly-long headers, has resizable columns and sortable headers",
-  "version": "1.0.1",
+  "version": "1.1.2",
   "license": "MIT",
   "repository": {
     "type": "git",
