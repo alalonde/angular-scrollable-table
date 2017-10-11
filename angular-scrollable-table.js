@@ -165,7 +165,7 @@
           $scope.sortAttr = $attrs.sortAttr;
 
           var headerElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner";
-          $element.find(".scrollArea").scroll(function (event) {
+          $element.find(".scrollArea").on("scroll", function (event) {
             $element.find(headerElementToFakeScroll).css('margin-left', 0 - event.target.scrollLeft);
           });
 
