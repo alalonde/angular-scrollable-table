@@ -1,14 +1,11 @@
 .scrollableContainer {
-    height: 310px;
     position: relative;
-    padding-top: 86px;
     overflow: hidden;
 }
 .scrollableContainer .headerSpacer {
     border: 1px solid #d5d5d5;
     border-bottom-color: #bbb;
     position: absolute;
-    height: 88px;
     top: 0;
     right: 0;
     left: 0;
@@ -27,6 +24,12 @@
     color: #464646;
 }
 
+.scrollArea table tbody {
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 100%;
+    table-layout: fixed;
+}
 .scrollArea {
     height: 100%;
     overflow-x: auto;
@@ -40,6 +43,8 @@
 .scrollArea table {
     overflow-x: auto;
     overflow-y: auto;
+    display: table;
+    table-layout: fixed;
     margin-bottom: 0;
     width: 100%;
     border: none;
@@ -65,19 +70,17 @@
 .scrollArea table .th-inner {
     border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
     top: 36px;
     height: 54px;
-    line-height: 54px;
     padding: 8px;
 }
-
+/*
 .scrollArea table th .box {
     border-left: 1px solid #ddd;
-}
+}*/
 
 /*  to hack fix firefox border issue    */
 @-moz-document url-prefix() {
