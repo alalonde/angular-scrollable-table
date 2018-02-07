@@ -83,14 +83,6 @@
     border-left: 1px solid #ddd;
 }*/
 
-/*  to hack fix firefox border issue    */
-@-moz-document url-prefix() {
-    .scrollArea table th .box{
-        border-right: 1px solid #ddd;
-        border-left: none;
-    }
-}
-
 .scrollArea table .th-inner .ng-scope {
     overflow: hidden;
     text-overflow: ellipsis;
