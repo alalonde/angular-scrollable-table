@@ -233,7 +233,7 @@
                         });
                     });
                     $scope.$watch(function(){
-						let paddingTop = 86,
+						var paddingTop = 86,
                             height = 88;
                         if(!$scope.$eval($scope.showFilters)) {
                             height = 32;
