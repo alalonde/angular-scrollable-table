@@ -15,14 +15,9 @@
                 },
                 template:
                 '<div class="scrollableContainer" ' +
-                'ng-style=' +
+                'style=' +
                 '"' +
-                '{height: ' +
-                "'" +
-                '{{tableHeight}}' +
-                'px' +
-                "'" +
-                '}' +
+                'height: {{tableHeight}}' +
                 '"' +
                 '>' +
                 '<div class="headerSpacer"></div>' +
