@@ -14,20 +14,15 @@
                 },
                 template:
                 '<div class="scrollableContainer" ' +
-                'style=' +
+                'ng-style=' +
                 '"' +
-                'height: {{tableHeight}}' +
+                '{height: tableHeight}' +
                 '"' +
                 '>' +
                 '<div class="headerSpacer"></div>' +
                 '<div class="scrollArea" ng-transclude></div>' +
                 '</div>',
                 controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-                    // define an API for child directives to view and modify sorting parameters
-                    this.renderTable = function (){
-                        return waitForRender().then(fixHeaderWidths);
-                    };
-
                     this.getTableElement = function (){
                         return $element;
                     };
@@ -63,77 +58,112 @@
                         return deferredRender.promise;
                     }
 
+                    var tableElement;
+                    function getTable(){
+                        if(typeof(tableElement) === 'undefined')
+                            tableElement = $element.find('.scrollArea table')[0];
+                        return tableElement;
+                    }
+                    var headerRow,
+                        filterRow;
+                    function getHeaderRow() {
+                        if(typeof(headerRow) === 'undefined')
+                            headerRow = $element.find("table th .th-inner-header:visible");
+                        return headerRow;
+                    }
+                    function getFilterRow() {
+                        if(typeof(filterRow) === 'undefined')
+                            filterRow = $element.find("table th .th-inner:visible");
+                        return filterRow;
+                    }
                     var headersAreFixed = $q.defer();
-
                     function fixHeaderWidths() {
-                        /*
-                         $element.find(".filter");
-                         $element.find(".header");
-                         * */
-                        if (!$element.find(".header .th-inner-header").length) {
-                            $element.find(".header").wrapInner('<div class="th-inner-header"></div>');
-                        }
-                        if($element.find(".header .th-inner-header:not(:has(.box))").length) {
-                            $element.find(".header .th-inner-header:not(:has(.box))").wrapInner('<div class="box"></div>');
-                        }
+                        let table = getTable();
+                        if($scope.tableHeight === 'auto')
+                            table.style.overflowY = 'hidden';
 
-                        if (!$element.find(".filter .th-inner").length) {
-                            $element.find(".filter").wrapInner('<div class="th-inner pt-1 px-1"></div>');
-                        }
-                        if($element.find(".filter .th-inner:not(:has(.box))").length) {
-                            $element.find(".filter .th-inner:not(:has(.box))").wrapInner('<div class="box"></div>');
-                        }
-
-
-                        $element.find("table th .th-inner-header:visible").each(function (index, el) {
-                            el = angular.element(el);
-                            var width = $scope.columnWidths[index] === 0 ? el.parent().width() : $scope.columnWidths[index],
-                                lastCol = $element.find("table th:visible:last"),
-                                headerWidth = width;
-                            if (lastCol.css("text-align") !== "center") {
-                                var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
-                                if (lastCol[0] == el.parent()[0] && hasScrollbar) {
-                                    headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                    headerWidth = Math.max(headerWidth, width);
-                                }
+                        if(table.style.tableLayout === '') {
+                            if (!$element.find(".header .th-inner-header").length) {
+                                $element.find(".header").wrapInner('<div class="th-inner-header"></div>');
                             }
-                            var minWidth = _getScale(el.parent().css('min-width'));
-                            headerWidth = Math.max(minWidth, headerWidth);
+                            if($element.find(".header .th-inner-header:not(:has(.box))").length) {
+                                $element.find(".header .th-inner-header:not(:has(.box))").wrapInner('<div class="box"></div>');
+                            }
+
+                            if (!$element.find(".filter .th-inner").length) {
+                                $element.find(".filter").wrapInner('<div class="th-inner pt-1 px-1"></div>');
+                            }
+                            if($element.find(".filter .th-inner:not(:has(.box))").length) {
+                                $element.find(".filter .th-inner:not(:has(.box))").wrapInner('<div class="box"></div>');
+                            }
+                        }
+
+                        table.style.tableLayout = 'auto';
+                        let headerRow = getHeaderRow(),
+                            filterRow = getFilterRow(),
+                            filtersShown = filterRow.length > 0,
+                            lastCol = $element.find("table th:visible:last");
+
+                        for(let i=0; i< headerRow.length; i++) {
+                            let el = angular.element(headerRow[i]),
+                                width = $scope.columnWidths[i] === 0 ? el.parent().width() : $scope.columnWidths[i],
+                                headerWidth = width,
+                                minWidth,
+                                filterEl = filtersShown ? angular.element(filterRow[i]) : undefined;
+
+                            if($scope.columnWidths[i] !== 0) {
+                                headerWidth = width;
+                            } else {
+                                if (lastCol.css("text-align") !== "center") {
+                                    let hasScrollbar = $element.find(".scrollArea").height() < parseInt(table.style.height,10);
+                                    if (lastCol[0] == el.parent()[0] && hasScrollbar) {
+                                        headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+                                        headerWidth = Math.max(headerWidth, width);
+                                    }
+                                }
+                                minWidth = _getScale(el.parent().css('min-width'));
+                                headerWidth = Math.max(minWidth, headerWidth);
+                            }
+
                             el.css("width", headerWidth);
                             el.parent().css("width", headerWidth);
-                        });
-
-                        $element.find("table th .th-inner:visible").each(function (index, el) {
-                            el = angular.element(el);
-                            var width = $scope.columnWidths[index] === 0 ? el.parent().width() : $scope.columnWidths[index],
-                                lastCol = $element.find("table th:visible:last"),
-                                headerWidth = width;
-                            if (lastCol.css("text-align") !== "center") {
-                                var hasScrollbar = $element.find(".scrollArea").height() < $element.find("table").height();
-                                if (lastCol[0] == el.parent()[0] && hasScrollbar) {
-                                    headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                    headerWidth = Math.max(headerWidth, width);
-                                }
+                            if(typeof(filterEl) !== 'undefined') {
+                                filterEl.css("width", headerWidth);
+                                filterEl.parent().css("width", headerWidth);
                             }
-                            var minWidth = _getScale(el.parent().css('min-width'));
-                            headerWidth = Math.max(minWidth, headerWidth);
-                            el.css("width", headerWidth);
-                            el.parent().css("width", headerWidth);
-                        });
+                        }
+                        tableElement.style.tableLayout = 'fixed';
                         headersAreFixed.resolve();
                     }
 
-                    var tableElement = $element.find('.scrollArea table').css('width');
-                    var headerElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner",
-                        secondHeaderElementToFakeScroll = isFirefox ? "thead" : "thead th .th-inner-header";
+                    function debounce(func, wait, immediate) {
+                        var timeout;
+                        return function() {
+                            var context = this, args = arguments;
+                            var later = function() {
+                                timeout = null;
+                                if (!immediate) func.apply(context, args);
+                            };
+                            var callNow = immediate && !timeout;
+                            clearTimeout(timeout);
+                            timeout = setTimeout(later, wait);
+                            if (callNow) func.apply(context, args);
+                        };
+                    };
+                    var headerResizeDebounce = debounce(fixHeaderWidths, 500)
                     $element.find(".scrollArea").scroll(function (event) {
-                        var IEWasAMistake = event.target.scrollLeft;
-                        $element.find(secondHeaderElementToFakeScroll).css('margin-left', 0 - IEWasAMistake);
-                        $element.find(headerElementToFakeScroll).css('margin-left', 0 - IEWasAMistake);
-                    });
+                        var IEWasAMistake = event.target.scrollLeft,
+                            headerElement = !isFirefox ? getHeaderRow() : $element.find('thead'),
+                            vertScrollOnly = (parseInt(headerElement.css('margin-left'),10) + IEWasAMistake) === 0;
 
-                    $scope.$on("renderScrollableTable", function() {
-                        renderChains($element.find('.scrollArea').width());
+                        if(vertScrollOnly){
+                            headerResizeDebounce();
+                        }
+                        if(!isFirefox) {
+                            getFilterRow().css('margin-left', 0 - IEWasAMistake);
+                        }
+                        headerElement.css('margin-left', 0 - IEWasAMistake);
+
                     });
 
                     angular.element(window).on('resize', function(){

@@ -28,7 +28,6 @@
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
-    table-layout: fixed;
 }
 .scrollArea {
     height: 100%;
@@ -44,11 +43,9 @@
     overflow-x: auto;
     overflow-y: auto;
     display: table;
-    table-layout: fixed;
     margin-bottom: 0;
     width: 100%;
     border: none;
-    /*border-collapse: separate;*/
 }
 .scrollArea table th {
     padding: 0 !important;
@@ -78,10 +75,6 @@
     z-index: 1;
     padding: 8px;
 }
-/*
-.scrollArea table th .box {
-    border-left: 1px solid #ddd;
-}*/
 
 .scrollArea table .th-inner .ng-scope {
     overflow: hidden;
