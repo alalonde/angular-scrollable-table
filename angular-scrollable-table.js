@@ -8,38 +8,29 @@
                 transclude: true,
                 restrict: 'E',
                 scope: {
-                    tableHeight: '=',
+                    tableHeight: '=?',
+                    tableWidth: '=?',
                     showFilters: '=?',
-                    columnWidths: '='
+                    columnWidths: '=?'
                 },
                 template:
                 '<div class="scrollableContainer" ' +
                 'ng-style=' +
                 '"' +
-                '{height: tableHeight}' +
+                '{height: tableHeight, width: tableWidth}' +
                 '"' +
                 '>' +
                 '<div class="headerSpacer"></div>' +
                 '<div class="scrollArea" ng-transclude></div>' +
                 '</div>',
-                controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
+                controller: ['$scope', '$element', '$attrs', function ($scope, $element) {
                     this.getTableElement = function (){
                         return $element;
                     };
 
-                    /**
-                     * append handle function to execute after table header resize.
-                     */
-                    this.appendTableResizingHandler = function (handler){
-                        var handlerSequence = $scope.headerResizeHanlers || [];
-                        for(var i = 0;i < handlerSequence.length;i++){
-                            if(handlerSequence[i].name === handler.name){
-                                return;
-                            }
-                        }
-                        handlerSequence.push(handler);
-                        $scope.headerResizeHanlers = handlerSequence;
-                    };
+                    $scope.tableHeight = angular.isDefined($scope.tableHeight) ? $scope.tableHeight : 'auto';
+                    $scope.tableWidth = angular.isDefined($scope.tableWidth) ? $scope.tableWidth : 'auto';
+                    $scope.showFilters = angular.isDefined($scope.showFilters) ? $scope.showFilters : false;
 
                     // Set fixed widths for the table headers in case the text overflows.
                     // There's no callback for when rendering is complete, so check the visibility of the table
@@ -83,56 +74,82 @@
                             table.style.overflowY = 'hidden';
 
                         if(table.style.tableLayout === '') {
+                            //wraps header rows in divs for width resizing
                             if (!$element.find(".header .th-inner-header").length) {
                                 $element.find(".header").wrapInner('<div class="th-inner-header"></div>');
-                            }
-                            if($element.find(".header .th-inner-header:not(:has(.box))").length) {
                                 $element.find(".header .th-inner-header:not(:has(.box))").wrapInner('<div class="box"></div>');
                             }
-
                             if (!$element.find(".filter .th-inner").length) {
                                 $element.find(".filter").wrapInner('<div class="th-inner pt-1 px-1"></div>');
-                            }
-                            if($element.find(".filter .th-inner:not(:has(.box))").length) {
                                 $element.find(".filter .th-inner:not(:has(.box))").wrapInner('<div class="box"></div>');
                             }
                         }
 
-                        table.style.tableLayout = 'auto';
                         let headerRow = getHeaderRow(),
                             filterRow = getFilterRow(),
                             filtersShown = filterRow.length > 0,
-                            lastCol = $element.find("table th:visible:last");
+                            hasColWidths = angular.isDefined($scope.columnWidths),
+                            hasScrollbar = $element.find(".scrollArea").height() < table.offsetHeight;
+
+                        table.style.tableLayout = 'auto';
 
                         for(let i=0; i< headerRow.length; i++) {
-                            let el = angular.element(headerRow[i]),
-                                width = $scope.columnWidths[i] === 0 ? el.parent().width() : $scope.columnWidths[i],
-                                headerWidth = width,
-                                minWidth,
-                                filterEl = filtersShown ? angular.element(filterRow[i]) : undefined;
+                            let el = headerRow[i],
+                                filterEl = filtersShown ? filterRow[i] : undefined;
+                            if(!hasColWidths || $scope.columnWidths[i] === 0) {
+                                let width = el.parentElement.getBoundingClientRect().width;
+                                //if there are no column widths or the width = 0 then the column is autosized
+                                table.style.tableLayout = 'auto';
 
-                            if($scope.columnWidths[i] !== 0) {
-                                headerWidth = width;
-                            } else {
-                                if (lastCol.css("text-align") !== "center") {
-                                    let hasScrollbar = $element.find(".scrollArea").height() < parseInt(table.style.height,10);
-                                    if (lastCol[0] == el.parent()[0] && hasScrollbar) {
-                                        headerWidth += $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                        headerWidth = Math.max(headerWidth, width);
-                                    }
+                                if (i === (headerRow.length-1) && hasScrollbar){
+                                    let scrollbarWidth = $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+                                    width = Math.max(scrollbarWidth + width, width);
                                 }
-                                minWidth = _getScale(el.parent().css('min-width'));
-                                headerWidth = Math.max(minWidth, headerWidth);
-                            }
+                                el.style.width = width + 'px';
+                                //the auto here is to manage the case where someone sets a bad/small column width
+                                //without this logic the columns overflow and mess up the whole table
+                                el.parentElement.style.width = 'auto';
+                                if(typeof(filterEl) !== 'undefined') {
+                                    filterEl.style.width = width + 'px';
+                                    filterEl.parentElement.style.width = 'auto';
+                                }
+                            }else {
+                                //if there is a non-zero value for column width it is set in a fixed fashion
+                                table.style.tableLayout = 'fixed';
+                                let width = $scope.columnWidths[i];
 
-                            el.css("width", headerWidth);
-                            el.parent().css("width", headerWidth);
-                            if(typeof(filterEl) !== 'undefined') {
-                                filterEl.css("width", headerWidth);
-                                filterEl.parent().css("width", headerWidth);
+                                el.style.width = width + 'px';
+                                el.parentElement.style.width = width + 'px';
+
+                                if(typeof(filterEl) !== 'undefined') {
+                                    filterEl.style.width = width + 'px';
+                                    filterEl.parentElement.style.width = width + 'px';
+                                }
                             }
                         }
-                        tableElement.style.tableLayout = 'fixed';
+                        table.style.tableLayout = 'fixed';
+
+                        //this loop cleans up any auto header widths and sets them to their actual width
+                        for(let i=0; i< headerRow.length; i++) {
+                            if(hasColWidths && $scope.columnWidths[i] !== 0)
+                                continue;
+                            let el = headerRow[i],
+                                width = el.parentElement.getBoundingClientRect().width,
+                                filterEl = filtersShown ? filterRow[i] : undefined;
+
+                            width = Math.max(el.getBoundingClientRect().width, width);
+                            if (i === (headerRow.length-1) && hasScrollbar){
+                                let scrollbarWidth = $element.find(".scrollArea").width() - $element.find("tbody tr").width();
+                                width = Math.max(scrollbarWidth + width, width);
+                            }
+                            el.style.width = width + 'px';
+                            el.parentElement.style.width = width + 'px';
+                            if(typeof(filterEl) !== 'undefined') {
+                                filterEl.style.width = width + 'px';
+                                filterEl.parentElement.style.width = width + 'px';
+                            }
+                        }
+
                         headersAreFixed.resolve();
                     }
 
@@ -150,7 +167,7 @@
                             if (callNow) func.apply(context, args);
                         };
                     };
-                    var headerResizeDebounce = debounce(fixHeaderWidths, 500)
+                    var headerResizeDebounce = debounce(fixHeaderWidths, 500);
                     $element.find(".scrollArea").scroll(function (event) {
                         var IEWasAMistake = event.target.scrollLeft,
                             headerElement = !isFirefox ? getHeaderRow() : $element.find('thead'),
@@ -166,22 +183,31 @@
 
                     });
 
+                    var first = true;
                     angular.element(window).on('resize', function(){
+                        if(!first){
+                            headerResizeDebounce();
+                            return;
+                        }
                         $timeout(function(){
                             $scope.$apply();
                         });
+                        first = false;
                     });
-                    $scope.$watch(function(){
-                        var paddingTop = 86,
-                            height = 88;
-                        if(!$scope.$eval($scope.showFilters)) {
-                            height = 32;
-                            paddingTop = 30;
-                            $element.find(".scrollArea table .th-inner-header").css('height', height + 'px')
-                        }
-                        $element.find(".scrollableContainer").css('padding-top', paddingTop + 'px')
-                        $element.find(".scrollableContainer .headerSpacer").css('height', height + 'px')
 
+                    $scope.$watch(function(){
+                        if(first) {
+                            //sets the header row(s) sizes
+                            let paddingTop = 86,
+                                height = 88;
+                            if(!$scope.showFilters) {
+                                height = 32;
+                                paddingTop = 30;
+                                $element.find(".scrollArea table .th-inner-header").css('height', height + 'px');
+                            }
+                            $element.find(".scrollableContainer").css('padding-top', paddingTop + 'px');
+                            $element.find(".scrollableContainer .headerSpacer").css('height', height + 'px');
+                        }
                         return $element.find('.scrollArea').width();
                     }, function(newWidth, oldWidth){
                         if(newWidth * oldWidth <= 0){
@@ -189,14 +215,8 @@
                         }
                         renderChains();
                     });
-
                     function renderChains(){
-                        var resizeQueue = waitForRender().then(fixHeaderWidths),
-                            customHandlers = $scope.headerResizeHanlers || [];
-                        for(var i = 0;i < customHandlers.length;i++){
-                            resizeQueue = resizeQueue.then(customHandlers[i]);
-                        }
-                        return resizeQueue;
+                        waitForRender().then(fixHeaderWidths);
                     }
                 }]
             };
