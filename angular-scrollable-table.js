@@ -95,16 +95,13 @@
 
                         for(let i=0; i< headerRow.length; i++) {
                             let el = headerRow[i],
-                                filterEl = filtersShown ? filterRow[i] : undefined;
+                                filterEl = filtersShown ? filterRow[i] : undefined,
+                                width;
                             if(!hasColWidths || $scope.columnWidths[i] === 0) {
-                                let width = el.parentElement.getBoundingClientRect().width;
+                                width = el.parentElement.getBoundingClientRect().width;
                                 //if there are no column widths or the width = 0 then the column is autosized
                                 table.style.tableLayout = 'auto';
 
-                                if (i === (headerRow.length-1) && hasScrollbar){
-                                    let scrollbarWidth = $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                    width = Math.max(scrollbarWidth + width, width);
-                                }
                                 el.style.width = width + 'px';
                                 //the auto here is to manage the case where someone sets a bad/small column width
                                 //without this logic the columns overflow and mess up the whole table
@@ -116,7 +113,7 @@
                             }else {
                                 //if there is a non-zero value for column width it is set in a fixed fashion
                                 table.style.tableLayout = 'fixed';
-                                let width = $scope.columnWidths[i];
+                                width = $scope.columnWidths[i];
 
                                 el.style.width = width + 'px';
                                 el.parentElement.style.width = width + 'px';
@@ -138,10 +135,6 @@
                                 filterEl = filtersShown ? filterRow[i] : undefined;
 
                             width = Math.max(el.getBoundingClientRect().width, width);
-                            if (i === (headerRow.length-1) && hasScrollbar){
-                                let scrollbarWidth = $element.find(".scrollArea").width() - $element.find("tbody tr").width();
-                                width = Math.max(scrollbarWidth + width, width);
-                            }
                             el.style.width = width + 'px';
                             el.parentElement.style.width = width + 'px';
                             if(typeof(filterEl) !== 'undefined') {
