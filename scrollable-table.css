@@ -4,6 +4,8 @@
 }
 .scrollableContainer .headerSpacer {
     border: 1px solid #d5d5d5;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     border-bottom-color: #bbb;
     position: absolute;
     top: 0;
@@ -65,13 +67,12 @@
 }
 
 .scrollArea table .th-inner {
-    border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
     top: 32px;
-    height: 54px;
+    height: 60px;
     z-index: 1;
     padding: 8px;
 }
