@@ -70,8 +70,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
-    top: 30px;
-    height: 52px;
+    top: 32px;
+    height: 54px;
     z-index: 1;
     padding: 8px;
 }

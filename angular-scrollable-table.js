@@ -191,8 +191,8 @@
                     $scope.$watch(function(){
                         if(first) {
                             //sets the header row(s) sizes
-                            let paddingTop = 82,
-                                height = 84;
+                            let paddingTop = 92,
+                                height = 94;
                             if(!$scope.showFilters) {
                                 height = 32;
                                 paddingTop = 30;
