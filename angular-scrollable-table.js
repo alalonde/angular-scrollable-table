@@ -77,10 +77,10 @@
                             //wraps header rows in divs for width resizing
                             if (!$element.find(".header .th-inner-header").length) {
                                 $element.find(".header").wrapInner('<div class="th-inner-header"></div>');
-                                $element.find(".header .th-inner-header:not(:has(.box))").wrapInner('<div class="box"></div>');
+                                $element.find(".header .th-inner-header:not(:has(.box))").wrapInner('<div class="box pl-2 pr-1"></div>');
                             }
                             if (!$element.find(".filter .th-inner").length) {
-                                $element.find(".filter").wrapInner('<div class="th-inner pt-1 px-1"></div>');
+                                $element.find(".filter").wrapInner('<div class="th-inner pt-0 px-2"></div>');
                                 $element.find(".filter .th-inner:not(:has(.box))").wrapInner('<div class="box"></div>');
                             }
                         }
@@ -191,8 +191,8 @@
                     $scope.$watch(function(){
                         if(first) {
                             //sets the header row(s) sizes
-                            let paddingTop = 86,
-                                height = 88;
+                            let paddingTop = 82,
+                                height = 84;
                             if(!$scope.showFilters) {
                                 height = 32;
                                 paddingTop = 30;

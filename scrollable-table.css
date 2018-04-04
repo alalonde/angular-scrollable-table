@@ -59,8 +59,8 @@
     white-space: nowrap;
     position: absolute;
     top: 0px!important;
-    height: 36px;
-    line-height: 36px;
+    height: 32px;
+    line-height: 32px;
     border-right: 1px solid #ddd;
 }
 
@@ -70,8 +70,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     position: absolute;
-    top: 36px;
-    height: 54px;
+    top: 30px;
+    height: 52px;
     z-index: 1;
     padding: 8px;
 }
@@ -121,4 +121,8 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.align-left {
+     text-align: left;
 }
