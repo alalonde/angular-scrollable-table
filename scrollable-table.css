@@ -4,8 +4,6 @@
 }
 .scrollableContainer .headerSpacer {
     border: 1px solid #d5d5d5;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     border-bottom-color: #bbb;
     position: absolute;
     top: 0;

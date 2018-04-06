@@ -194,8 +194,8 @@
                             let paddingTop = 92,
                                 height = 94;
                             if(!$scope.showFilters) {
-                                height = 32;
-                                paddingTop = 30;
+                                height = 33;
+                                paddingTop = 32;
                                 $element.find(".scrollArea table .th-inner-header").css('height', height + 'px');
                             }
                             $element.find(".scrollableContainer").css('padding-top', paddingTop + 'px');
