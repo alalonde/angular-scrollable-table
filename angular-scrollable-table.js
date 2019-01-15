@@ -77,6 +77,8 @@
             var y = $parse(exprParts[2])(scope);
 
             if (x === y) return 0;
+            if (x == null) && (y != null) return 1;
+            if (x != null) && (y == null) return -1;            
             return x > y ? 1 : -1;
           }
 
